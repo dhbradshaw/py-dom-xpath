@@ -4,6 +4,7 @@ import math
 import operator
 import re
 import xml.dom
+from xml.dom.minidom import parseString
 import weakref
 
 from xpath.exceptions import *
@@ -39,7 +40,7 @@ def string_value(node):
 
 def document_order(node):
     """Compute a document order value for the node.
-    
+
     cmp(document_order(a), document_order(b)) will return -1, 0, or 1 if
     a is before, identical to, or after b in the document respectively.
 
@@ -554,6 +555,10 @@ class Function(Expr):
     def f_sum(self, node, pos, size, context, nodes):
         return sum((number(string_value(x)) for x in nodes))
 
+    @function(1, 1, convert=nodeset)
+    def f_avg(self, node, pos, size, context, nodes):
+        return sum((number(string_value(x)) for x in nodes)) / float(len(nodes))
+
     @function(1, 1, convert=number)
     def f_floor(self, node, pos, size, context, n):
         return math.floor(n)
@@ -742,7 +747,9 @@ class PathExpr(Expr):
             for i in xrange(len(result)):
                 nodes = step.evaluate(result[i], i+1, len(result), context)
                 if not nodesetp(nodes):
-                    raise XPathTypeError("path step is not a node-set")
+                    # raise XPathTypeError("path step is not a node-set: {}".format(nodes))
+                    doc = parseString('<temp>{}</temp>'.format(nodes))
+                    nodes = xpath.find('//temp',doc,)
                 merge_into_nodeset(aggregate, nodes)
             result = aggregate
 
@@ -753,7 +760,7 @@ class PathExpr(Expr):
 
 class PredicateList(Expr):
     """A list of predicates.
-    
+
     Predicates are handled as an expression wrapping the expression
     filtered by the predicates.
 
