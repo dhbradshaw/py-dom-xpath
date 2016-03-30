@@ -17,6 +17,7 @@ def api(f):
 
     """
     def api_function(*args, **kwargs):
+        return f(*args, **kwargs)
         try:
             return f(*args, **kwargs)
         except XPathError, e:
