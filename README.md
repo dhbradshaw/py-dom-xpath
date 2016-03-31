@@ -1,6 +1,6 @@
 # XPath: Parsing xpath 2.0 in Python
 
-lxml is the standard xpath parser for Python.  It is fully xpath 1.0 capable, but does not work for xpath 2.0 syntax.
+lxml is the standard third party xpath parser for Python.  It is fully xpath 1.0 capable, but does not work for xpath 2.0 syntax.
 
 In fact, as of March 31 2016, I have been unable to find an xpath 2.0 parser for python.  
 The idea of this fork of (via Greg Haskin's copy) of Niel Damien's xpath 1.0  parser is to remedy that, at least to some extent.
