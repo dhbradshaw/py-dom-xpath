@@ -15,6 +15,6 @@ class TestXPath2(unittest.TestCase):
                 <day><temperature>50 F</temperature></day>
             </days>""").documentElement
         result = xpath.find("ceiling(avg(//day/temperature/number(translate(.,' F',''))))", doc)
-        print result
+        self.assertEqual(result, 45)
 if __name__ == '__main__':
     unittest.main()
